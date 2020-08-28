@@ -8,6 +8,6 @@ namespace SynonymAPI.Models
     public class AddSynonymModel
     {
         public string KeyWord { get; set; }
-        public List<string> Synonyms { get; set; }
+        public HashSet<string> Synonyms { get; set; }
     }
 }
