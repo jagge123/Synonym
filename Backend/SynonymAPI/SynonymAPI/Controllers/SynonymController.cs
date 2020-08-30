@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SynonymAPI.Handlers;
+using SynonymAPI.Models;
 
 namespace SynonymAPI.Controllers
 {
@@ -7,21 +10,26 @@ namespace SynonymAPI.Controllers
     [ApiController]
     public class SynonymController : ControllerBase
     {
+        private readonly IMediator _mediator;
 
-        public async Task<IActionResult> Post()
+        public SynonymController(IMediator mediator)
         {
-            return Ok();
+            _mediator = mediator;
         }
 
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Post(SynonymModel synonymModel)
         {
-            return Ok();
+            var result = await _mediator.Send(new AddSynonym(synonymModel));
+
+            return new ObjectResult(result);
         }
 
-        [Route("{id}")]
-        public async Task<IActionResult> Get(string word)
+        [Route("{keyword}")]
+        public async Task<IActionResult> Get(string keyword)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetSynonym(keyword));
+
+            return new ObjectResult(result);
         }
     }
 }

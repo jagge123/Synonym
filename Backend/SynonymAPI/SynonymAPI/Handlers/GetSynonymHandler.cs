@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SynonymAPI.Application
+namespace SynonymAPI.Handlers
 {
     public class GetSynonym : IRequest<SynonymModel>
     {
@@ -25,7 +25,10 @@ namespace SynonymAPI.Application
         {
             HashSet<string> values;
 
-            SynonymHolder.Synonyms.TryGetValue(request.Keyword, out values);
+            SynonymStorage.Synonyms.TryGetValue(request.Keyword, out values);
+            if(values == null)
+                throw new KeyNotFoundException($"No synonyms found for: {request.Keyword}");
+
 
             var result = new SynonymModel()
             {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SynonymAPI.Application
+namespace SynonymAPI.Handlers
 {
     public class UpdateSynonym : IRequest<Dictionary<string, HashSet<string>>>
     {

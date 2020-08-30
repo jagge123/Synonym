@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SynonymAPI.Application.Storage
 {
-    public static class SynonymHolder
+    public static class SynonymStorage
     {
         public static Dictionary<string, HashSet<string>> Synonyms { get; set; }
     }

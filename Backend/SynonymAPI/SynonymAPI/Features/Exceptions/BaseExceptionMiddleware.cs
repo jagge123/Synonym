@@ -39,6 +39,15 @@ namespace SynonymAPI.Features.Exceptions
                         };
                         break;
 
+                    case KeyNotFoundException _:
+                        statusCode = (int)HttpStatusCode.NotFound;
+                        exceptionModel = new ExceptionModel()
+                        {
+                            Severity = Severity.Warning,
+                            Diagonistics = exception.Message
+                        };
+                        break;
+
                     default:
                         statusCode = (int)HttpStatusCode.InternalServerError;
                         exceptionModel = new ExceptionModel()
