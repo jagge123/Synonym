@@ -17,6 +17,7 @@ namespace SynonymAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Post(SynonymModel synonymModel)
         {
             var result = await _mediator.Send(new AddSynonym(synonymModel));
@@ -24,6 +25,7 @@ namespace SynonymAPI.Controllers
             return new ObjectResult(result);
         }
 
+        [HttpGet]
         [Route("{keyword}")]
         public async Task<IActionResult> Get(string keyword)
         {

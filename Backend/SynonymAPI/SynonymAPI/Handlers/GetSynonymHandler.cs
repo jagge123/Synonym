@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SynonymAPI.Application.Storage;
 using SynonymAPI.Models;
+using SynonymAPI.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +22,16 @@ namespace SynonymAPI.Handlers
 
     public class GetSynonymHandler : IRequestHandler<GetSynonym, SynonymModel>
     {
+        private readonly ISynonymRepository _synonymRepository;
+
+        public GetSynonymHandler(ISynonymRepository synonymRepository)
+        {
+            _synonymRepository = synonymRepository;
+        }
+
         public Task<SynonymModel> Handle(GetSynonym request, CancellationToken cancellationToken)
         {
-            HashSet<string> values;
-
-            SynonymStorage.Synonyms.TryGetValue(request.Keyword, out values);
-            if(values == null)
-                throw new KeyNotFoundException($"No synonyms found for: {request.Keyword}");
-
-
-            var result = new SynonymModel()
-            {
-                KeyWord = request.Keyword,
-                Synonyms = values
-            };
-
-            return Task.FromResult(result);
+            return Task.FromResult(_synonymRepository.Get(request.Keyword));
         }
     }
 }

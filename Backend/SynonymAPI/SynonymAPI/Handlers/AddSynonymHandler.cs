@@ -32,12 +32,6 @@ namespace SynonymAPI.Handlers
 
         public Task<SynonymModel> Handle(AddSynonym request, CancellationToken cancellationToken)
         {
-            //Check if keyword is already in store
-            if (SynonymStorage.Synonyms.ContainsKey(request.Synonyms.KeyWord))
-            {
-                throw new ArgumentException("This word is already in store!");
-            }
-
             return Task.FromResult(_synonymRepository.Add(request.Synonyms));
         }
     }
