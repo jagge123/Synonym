@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SynonymAPI.Models
 {
-    public class AddSynonymModel
+    public class SynonymModel
     {
         public string KeyWord { get; set; }
         public HashSet<string> Synonyms { get; set; }

@@ -10,9 +10,9 @@ namespace SynonymAPI.Application
 {
     public class UpdateSynonym : IRequest<Dictionary<string, HashSet<string>>>
     {
-        public AddSynonymModel Synonyms { get; private set; }
+        public SynonymModel Synonyms { get; private set; }
 
-        public UpdateSynonym(AddSynonymModel synonyms)
+        public UpdateSynonym(SynonymModel synonyms)
         {
             Synonyms = synonyms;
         }

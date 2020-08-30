@@ -9,51 +9,48 @@ using System.Threading.Tasks;
 
 namespace SynonymAPI.Application
 {
-    public class AddSynonym : IRequest<Dictionary<string, HashSet<string>>>
+    public class AddSynonym : IRequest<SynonymModel>
     {
-        public AddSynonymModel Synonyms { get; private set; }
+        public SynonymModel Synonyms { get; private set; }
+
+        public AddSynonym(SynonymModel synonyms)
+        {
+            Synonyms = synonyms;
+        }
 
     }
 
-    public class AddSynonymHandler : IRequestHandler<AddSynonym, Dictionary<string, HashSet<string>>>
+    public class AddSynonymHandler : IRequestHandler<AddSynonym, SynonymModel>
     {
-        private readonly IMediator _mediator;
-
-        public AddSynonymHandler(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public async Task<Dictionary<string, HashSet<string>>> Handle(AddSynonym request, CancellationToken cancellationToken)
+        public Task<SynonymModel> Handle(AddSynonym request, CancellationToken cancellationToken)
         {
             var keyword = request.Synonyms.KeyWord;
             var values = request.Synonyms.Synonyms;
-            //Check that if syn is already in store
+            //Check if keyword is already in store
             if (SynonymHolder.Synonyms.ContainsKey(request.Synonyms.KeyWord))
             {
-                //Just redirected to PUT since value already exists
-                return await _mediator.Send(new UpdateSynonym(request.Synonyms));
+                throw new ArgumentException("This word is already in store!");
             }
             else
             {
                 //Add synonym
                 SynonymHolder.Synonyms.Add(keyword, values);
                 //Check if any of the values exist and if so - add our keyword as their synonym
+                //Also prepare data for rendering
                 UpdateExisting(keyword, values);
             }
-            throw new NotImplementedException();
+            return Task.FromResult(request.Synonyms);
         }
 
-        private static void UpdateExisting(string keyword, HashSet<string> values)
+        private static void UpdateExisting(string keyword, HashSet<string> synonyms)
         {
-            foreach (var value in values)
+            foreach (var synonym in synonyms)
             {
-
-                if (SynonymHolder.Synonyms.ContainsKey(value))
+                if (SynonymHolder.Synonyms.ContainsKey(synonym))
                 {
                     HashSet<string> oldValues;
                     //Now we know that one of our values is already stored as a synonym then we add the keyword to that collection aswell
-                    SynonymHolder.Synonyms.TryGetValue(value, out oldValues);
+                    SynonymHolder.Synonyms.TryGetValue(synonym, out oldValues);
                     if (oldValues != null)
                         oldValues.Add(keyword);
                 }
