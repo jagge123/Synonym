@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+
 import { Route, Switch, Redirect } from "react-router-dom";
 import Synonyms from "./components/synonyms";
-
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
-import "./App.css";
+import SynonymForm from "./components/synonymForm";
+import NotFound from "./components/notFound";
 
 class App extends Component {
   state = {};
@@ -13,7 +14,13 @@ class App extends Component {
         <ThemeProvider>
           <CSSReset />
           <div className="container">
-            <Synonyms></Synonyms>
+            <Switch>
+              <Route path="/synonym/new" component={SynonymForm}></Route>
+              <Route path="/home" component={Synonyms}></Route>
+              <Route path="/not-found" component={NotFound}></Route>
+              <Redirect to="/home" from="/" exact></Redirect>
+              <Redirect to="/not-found"></Redirect>
+            </Switch>
           </div>
         </ThemeProvider>
       </React.Fragment>
