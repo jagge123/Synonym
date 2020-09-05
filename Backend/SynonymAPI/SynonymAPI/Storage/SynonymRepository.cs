@@ -24,8 +24,9 @@ namespace SynonymAPI.Storage
         {
             HashSet<string> values;
             SynonymStorage.Synonyms.TryGetValue(keyword, out values);
-            if (values == null)
-                throw new KeyNotFoundException($"No synonyms found for: {keyword}");
+            //if (values == null)
+                //Should be 404 not found
+                //throw new KeyNotFoundException($"No synonyms found for: {keyword}");
 
             return new SynonymModel()
             {

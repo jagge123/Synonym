@@ -1,13 +1,14 @@
 import React from "react";
 import { Input } from "@chakra-ui/core";
 
-const Search = () => {
+const Search = ({ onChange, placeholder }) => {
   return (
     <Input
       isInvalid
-      errorBorderColor="red.300"
-      placeholder="Search"
+      errorBorderColor="blue.500"
+      placeholder={placeholder}
       width="500px"
+      onChange={(e) => onChange(e)}
     ></Input>
   );
 };

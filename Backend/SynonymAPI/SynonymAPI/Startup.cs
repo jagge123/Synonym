@@ -28,6 +28,14 @@ namespace SynonymAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
             services.AddMediatR(typeof(Startup));
             services.AddScoped<ISynonymRepository, SynonymRepository>();
         }
@@ -41,6 +49,8 @@ namespace SynonymAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
