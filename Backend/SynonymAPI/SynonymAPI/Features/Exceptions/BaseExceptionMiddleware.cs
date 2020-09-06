@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -6,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SynonymAPI.Features.Exceptions
 {
+    /// <summary>
+    /// Middleware to handle common exceptions in application
+    /// </summary>
     public class BaseExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -57,7 +61,13 @@ namespace SynonymAPI.Features.Exceptions
                 }                 
             }
             context.Response.StatusCode = statusCode;
-            await context.Response.WriteAsync(exceptionModel.ToString());
+            var result = new ObjectResult(exceptionModel) {StatusCode = statusCode };
+            await ExecuteResultAsync(context, result);
+        }
+
+        protected internal virtual async Task ExecuteResultAsync(HttpContext context, IActionResult result)
+        {
+            await result.ExecuteResultAsync(new ActionContext { HttpContext = context });
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SynonymAPI.Features.Behaviours;
+using SynonymAPI.Features.Exceptions;
 using SynonymAPI.Storage;
 
 namespace SynonymAPI
@@ -44,6 +45,8 @@ namespace SynonymAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseBaseException();
 
             app.UseCors("CorsPolicy");
 
