@@ -2,8 +2,6 @@
 using SynonymAPI.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SynonymAPI.Storage
 {
@@ -11,10 +9,12 @@ namespace SynonymAPI.Storage
     {
         public SynonymModel Add(SynonymModel model)
         {
+            //We dont handle updates in this version...
             if (SynonymStorage.Synonyms.ContainsKey(model.KeyWord))
                 throw new ArgumentException("This word is already in store!");
-
+            //We use one dictionary for storage and one HashSet for storing keys enabling faster search
             SynonymStorage.Synonyms.Add(model.KeyWord, model.Synonyms);
+            SynonymStorage.SynonymKeys.Add(model.KeyWord);
             UpdateExisting(model.KeyWord, model.Synonyms);
 
             return model;
@@ -22,11 +22,9 @@ namespace SynonymAPI.Storage
 
         public SynonymModel Get(string keyword)
         {
-            HashSet<string> values;
-            SynonymStorage.Synonyms.TryGetValue(keyword, out values);
-            //if (values == null)
-                //Should be 404 not found
-                //throw new KeyNotFoundException($"No synonyms found for: {keyword}");
+            HashSet<string> values = new HashSet<string>();
+            if (SynonymStorage.SynonymKeys.Contains(keyword))
+                SynonymStorage.Synonyms.TryGetValue(keyword, out values);
 
             return new SynonymModel()
             {
@@ -39,7 +37,7 @@ namespace SynonymAPI.Storage
         {
             foreach (var synonym in synonyms)
             {
-                if (SynonymStorage.Synonyms.ContainsKey(synonym))
+                if (SynonymStorage.SynonymKeys.Contains(synonym))
                 {
                     AddSynonym(synonym, key);
                 }
@@ -47,6 +45,7 @@ namespace SynonymAPI.Storage
                 {
                     //Add synonym as key and keyword as value to work in both directions.
                     SynonymStorage.Synonyms.Add(synonym, new HashSet<string>() { key });
+                    SynonymStorage.SynonymKeys.Add(synonym);
                 }
             }
         }
@@ -56,7 +55,7 @@ namespace SynonymAPI.Storage
             HashSet<string> values;
             //Now we know that one of our values is already stored as a synonym then we add the keyword to that collection aswell
             SynonymStorage.Synonyms.TryGetValue(key, out values);
-            if (values != null)
+            if (values != null) //Better safe than sorry...
             {
                 values.Add(synonym);
                 SynonymStorage.Synonyms[key] = values;

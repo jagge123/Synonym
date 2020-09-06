@@ -1,10 +1,6 @@
 ﻿using MediatR;
-using SynonymAPI.Application.Storage;
 using SynonymAPI.Models;
 using SynonymAPI.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

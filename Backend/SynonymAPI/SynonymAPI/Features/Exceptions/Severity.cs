@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SynonymAPI.Features.Exceptions
+﻿namespace SynonymAPI.Features.Exceptions
 {
     public static class Severity
     {
