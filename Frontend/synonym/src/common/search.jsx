@@ -5,7 +5,7 @@ const Search = ({ onChange, placeholder }) => {
   return (
     <Input
       isInvalid
-      errorBorderColor="blue.500"
+      errorBorderColor="blue.400"
       placeholder={placeholder}
       width="500px"
       onChange={(e) => onChange(e)}

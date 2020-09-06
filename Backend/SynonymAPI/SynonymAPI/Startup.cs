@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SynonymAPI.Features.Behaviours;
 using SynonymAPI.Storage;
 
 namespace SynonymAPI
@@ -37,6 +38,7 @@ namespace SynonymAPI
             });
 
             services.AddMediatR(typeof(Startup));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FormatBehavior<,>));
             services.AddScoped<ISynonymRepository, SynonymRepository>();
         }
 

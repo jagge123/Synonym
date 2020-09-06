@@ -8,5 +8,5 @@ export function get(keyword) {
 }
 
 export function post(body) {
-  http.post(endpoint, body);
+  return http.post(endpoint, body);
 }

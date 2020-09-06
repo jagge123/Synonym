@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@chakra-ui/core";
+import { Button, Icon } from "@chakra-ui/core";
 import { debounce } from "lodash";
 import RenderList from "../common/list";
 import Search from "../common/search";

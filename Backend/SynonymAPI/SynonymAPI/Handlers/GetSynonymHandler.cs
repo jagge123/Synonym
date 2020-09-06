@@ -12,7 +12,7 @@ namespace SynonymAPI.Handlers
 {
     public class GetSynonym : IRequest<SynonymModel>
     {
-        public string Keyword { get; private set; }
+        public string Keyword { get; set; }
 
         public GetSynonym(string keyword)
         {
