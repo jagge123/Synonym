@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Icon } from "@chakra-ui/core";
+import { Button } from "@chakra-ui/core";
 import { debounce } from "lodash";
 import RenderList from "../common/list";
 import Search from "../common/search";
@@ -46,7 +46,7 @@ function Synonyms() {
         </Button>
       </div>
       <div>
-        <RenderList data={synonyms} styleType="disc"></RenderList>
+        <RenderList data={synonyms}></RenderList>
       </div>
     </div>
   );

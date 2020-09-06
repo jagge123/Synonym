@@ -1,7 +1,9 @@
 import React from "react";
-import { List, ListItem, ListIcon } from "@chakra-ui/core";
+import { List, ListItem, ListIcon, Text, Icon, Flex } from "@chakra-ui/core";
 import { SiVerizon } from "react-icons/si";
-const RenderList = ({ data, styleType }) => {
+import { BiSad } from "react-icons/bi";
+
+const RenderList = ({ data }) => {
   if (!data) {
     return null;
   } else {
@@ -18,7 +20,14 @@ const RenderList = ({ data, styleType }) => {
         </List>
       );
     } else {
-      return <h2>Not found</h2>;
+      return (
+        <Flex align="center" marginTop="20px">
+          <Text fontWeight="bold">
+            We couldn't find what you where looking for...
+          </Text>
+          <Icon as={BiSad} size="40px" color="red.400"></Icon>
+        </Flex>
+      );
     }
   }
 };

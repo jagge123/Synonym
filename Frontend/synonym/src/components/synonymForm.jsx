@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { post } from "../services/synonymService";
 import { useForm } from "react-hook-form";
+import { times } from "lodash";
 import InputForm from "../common/inputForm";
-import DisplayToast from "../common/toast";
 import {
   FormControl,
   FormLabel,
@@ -14,53 +14,37 @@ import {
 } from "@chakra-ui/core";
 
 function SynonymForm() {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, register, formState } = useForm();
   const [index, setIndex] = useState(1);
   const toast = useToast();
-
-  const [inputs, addInput] = useState([
-    <InputForm
-      label="Synonym"
-      name={`Synonyms[0]`}
-      register={register()}
-    ></InputForm>,
-  ]);
-
-  const renderNewInput = () => {
-    addInput([
-      ...inputs,
-      <InputForm
-        label="Synonym"
-        name={`Synonyms[${index}]`}
-        register={register()}
-      ></InputForm>,
-    ]);
-  };
 
   async function onSubmit(values) {
     try {
       await post(values);
+      toast({
+        title: "Success",
+        description: "Synonyms added!",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     } catch (ex) {
-      DisplayToast();
+      toast({
+        title: "An error occurred.",
+        description: "Unable to add word with synonyms!",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   }
-
-  const DisplayToast = () => {
-    return toast({
-      title: "An error occurred.",
-      description: "Unable to add word with synonyms!",
-      status: "error",
-      duration: 9000,
-      isClosable: true,
-    });
-  };
 
   return (
     <div className="formContent">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <FormLabel htmlFor="keyword" fontWeight="bold">
-            New word
+            Word
           </FormLabel>
           <Input
             name="keyword"
@@ -72,14 +56,21 @@ function SynonymForm() {
           <FormHelperText id="helper-text">
             Write the word you want to add synonyms to!
           </FormHelperText>
-          {inputs}
+          {times(index, String).map((myIndex) => (
+            <InputForm
+              key={myIndex}
+              label="Synonym"
+              name={`Synonyms[${myIndex}]`}
+              register={register()}
+            ></InputForm>
+          ))}
           <Icon
             name="plus-square"
             size="30px"
             color="blue.400"
             marginTop="7px"
             focusable="true"
-            onClick={() => renderNewInput()}
+            onClick={() => setIndex(index + 1)}
           />
         </FormControl>
         <Button
@@ -89,7 +80,6 @@ function SynonymForm() {
           width="100px"
           float="right"
           marginBottom="20px"
-          onClick={() => setIndex(index + 1)}
           isLoading={formState.isSubmitting}
         >
           Add
