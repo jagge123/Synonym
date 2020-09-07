@@ -22,6 +22,9 @@ namespace SynonymAPI.Features.Behaviours
                 var synonyms = new HashSet<string>();
                 foreach(var synonym in addSynonym.Synonyms.Synonyms)
                 {
+                    if (string.IsNullOrEmpty(synonym))
+                        continue;
+
                     synonyms.Add(Format.FirstUpperRestLower(synonym));
                 }
                 addSynonym.Synonyms.KeyWord = Format.FirstUpperRestLower(addSynonym.Synonyms.KeyWord);

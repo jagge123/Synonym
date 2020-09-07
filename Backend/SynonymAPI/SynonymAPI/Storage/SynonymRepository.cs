@@ -9,10 +9,10 @@ namespace SynonymAPI.Storage
     {
         public SynonymModel Add(SynonymModel model)
         {
-            //We dont handle updates in this version...
+            //Dont handle updates in this version...
             if (SynonymStorage.Synonyms.ContainsKey(model.KeyWord))
                 throw new ArgumentException("This word is already in store!");
-            //We use one dictionary for storage and one HashSet for storing keys enabling faster search
+            //Use one dictionary for storage and one HashSet for storing keys enabling faster search
             SynonymStorage.Synonyms.Add(model.KeyWord, model.Synonyms);
             SynonymStorage.SynonymKeys.Add(model.KeyWord);
             UpdateExisting(model.KeyWord, model.Synonyms);
