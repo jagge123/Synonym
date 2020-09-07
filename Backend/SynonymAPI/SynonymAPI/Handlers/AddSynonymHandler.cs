@@ -28,6 +28,7 @@ namespace SynonymAPI.Handlers
 
         public Task<SynonymModel> Handle(AddSynonym request, CancellationToken cancellationToken)
         {
+            //When the customer take the step towards a real database this operations will be async
             return Task.FromResult(_synonymRepository.Add(request.Synonyms));
         }
     }

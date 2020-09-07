@@ -44,11 +44,11 @@ namespace SynonymAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseBaseException();
-
-            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 

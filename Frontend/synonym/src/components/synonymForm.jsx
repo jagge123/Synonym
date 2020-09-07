@@ -1,26 +1,31 @@
 import React, { useState } from "react";
-import { post } from "../services/synonymService";
 import { useForm } from "react-hook-form";
+import { MdExposurePlus1 } from "react-icons/md";
 import { times } from "lodash";
-import InputForm from "../common/inputForm";
 import {
   FormControl,
-  FormLabel,
   FormHelperText,
-  Input,
-  Icon,
+  IconButton,
   Button,
   useToast,
 } from "@chakra-ui/core";
+
+import InputForm from "../common/inputForm";
+import { post } from "../services/synonymService";
 
 function SynonymForm() {
   const { handleSubmit, register, formState } = useForm();
   const [index, setIndex] = useState(1);
   const toast = useToast();
 
-  async function onSubmit(values) {
+  async function onSubmit(values, e) {
     try {
+      //Probably better ways to remove empty inputs...
+      values.Synonyms = values.Synonyms.filter((synonym) => synonym);
       await post(values);
+      //Remove input and reset index
+      e.target.reset();
+      setIndex(1);
       toast({
         title: "Success",
         description: "Synonyms added!",
@@ -29,6 +34,7 @@ function SynonymForm() {
         isClosable: true,
       });
     } catch (ex) {
+      //Display general toast
       toast({
         title: "An error occurred.",
         description: "Unable to add word with synonyms!",
@@ -43,16 +49,14 @@ function SynonymForm() {
     <div className="formContent">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
-          <FormLabel htmlFor="keyword" fontWeight="bold">
-            Word
-          </FormLabel>
-          <Input
+          <InputForm
+            label="Word"
             name="keyword"
             type="text"
             id="keyword"
             aria-describedby="helper-text"
-            ref={register()}
-          ></Input>
+            inputRef={register()}
+          ></InputForm>
           <FormHelperText id="helper-text">
             Write the word you want to add synonyms to!
           </FormHelperText>
@@ -61,15 +65,15 @@ function SynonymForm() {
               key={myIndex}
               label="Synonym"
               name={`Synonyms[${myIndex}]`}
-              register={register()}
+              inputRef={register()}
             ></InputForm>
           ))}
-          <Icon
-            name="plus-square"
-            size="30px"
-            color="blue.400"
+          <IconButton
+            icon={MdExposurePlus1}
+            size="sm"
+            fontSize="20px"
+            variantColor="blue"
             marginTop="7px"
-            focusable="true"
             onClick={() => setIndex(index + 1)}
           />
         </FormControl>

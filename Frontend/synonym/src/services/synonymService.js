@@ -3,8 +3,8 @@ import config from "../config.json";
 
 let endpoint = config.endpointApi;
 
-export function get(keyword) {
-  return http.get(endpoint + "/" + keyword);
+export function get(id) {
+  return http.get(endpoint + "/" + id);
 }
 
 export function post(body) {

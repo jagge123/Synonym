@@ -19,9 +19,9 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route path="/synonym/new" component={SynonymForm}></Route>
-                <Route path="/" component={Synonyms}></Route>
                 <Route path="/not-found" component={NotFound}></Route>
-                <Redirect to="/" from="/" exact></Redirect>
+                <Route path="/synonym" component={Synonyms}></Route>
+                <Redirect to="/synonym" from="/" exact></Redirect>
                 <Redirect to="/not-found"></Redirect>
               </Switch>
             </div>

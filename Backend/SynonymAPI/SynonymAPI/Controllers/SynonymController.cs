@@ -22,7 +22,7 @@ namespace SynonymAPI.Controllers
         {
             var result = await _mediator.Send(new AddSynonym(synonymModel));
 
-            return Created($"{result.KeyWord}", result);
+            return Created($"/{result.KeyWord}", result);
         }
 
         [HttpGet]

@@ -1,7 +1,7 @@
 import React from "react";
-import { List, ListItem, ListIcon, Text, Icon, Flex } from "@chakra-ui/core";
 import { SiVerizon } from "react-icons/si";
 import { BiSad } from "react-icons/bi";
+import { List, ListItem, ListIcon, Text, Icon, Flex } from "@chakra-ui/core";
 
 const RenderList = ({ data }) => {
   if (!data) {
@@ -22,10 +22,10 @@ const RenderList = ({ data }) => {
     } else {
       return (
         <Flex align="center" marginTop="20px">
-          <Text fontWeight="bold">
-            We couldn't find what you where looking for...
+          <Text fontFamily="Trebuchet MS, Helvetica, sans-serif">
+            No matches found!
           </Text>
-          <Icon as={BiSad} size="40px" color="red.400"></Icon>
+          <Icon as={BiSad} size="40px" color="blue.400"></Icon>
         </Flex>
       );
     }
