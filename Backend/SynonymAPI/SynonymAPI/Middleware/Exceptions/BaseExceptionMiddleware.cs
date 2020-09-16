@@ -49,11 +49,11 @@ namespace SynonymAPI.Features.Exceptions
                             Diagonistics = exception.Message
                         };
                         break;
-                }                 
+                }
+                context.Response.StatusCode = statusCode;
+                var result = new ObjectResult(exceptionModel) { StatusCode = statusCode };
+                await ExecuteResultAsync(context, result);
             }
-            context.Response.StatusCode = statusCode;
-            var result = new ObjectResult(exceptionModel) {StatusCode = statusCode };
-            await ExecuteResultAsync(context, result);
         }
 
         protected internal virtual async Task ExecuteResultAsync(HttpContext context, IActionResult result)
