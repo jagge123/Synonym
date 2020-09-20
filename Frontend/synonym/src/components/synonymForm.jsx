@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { MdExposurePlus1 } from "react-icons/md";
-import { times } from "lodash";
+import { AiFillPlusSquare } from "react-icons/ai";
+import { times, debounce } from "lodash";
 import {
   FormControl,
   FormHelperText,
@@ -11,12 +11,46 @@ import {
 } from "@chakra-ui/core";
 
 import InputForm from "../common/inputForm";
-import { post } from "../services/synonymService";
+import { post, get } from "../services/synonymService";
+import Search from "../common/search";
+import Alert from "../common/alert";
 
 function SynonymForm() {
   const { handleSubmit, register, formState } = useForm();
   const [index, setIndex] = useState(1);
+  const [synonyms, setSynonyms] = useState([]);
+  const [alertIsOpen, setIsOpen] = useState(false);
   const toast = useToast();
+
+  var debounceGetSynonyms = debounce(
+    (query) => {
+      handleInput(query);
+    },
+    700,
+    { maxWait: 700 }
+  );
+
+  const onInputChange = (e) => {
+    const query = e.target.value;
+    if (query.length >= 2) debounceGetSynonyms(e.target.value);
+  };
+
+  const handleInput = async (query) => {
+    setSynonyms([]);
+    const { data } = await get(query);
+    if (data.synonyms !== null) {
+      console.log(data);
+      setSynonyms(data.synonyms);
+      setIsOpen(true);
+    } else {
+      console.log("failed fetch");
+      setSynonyms([]);
+    }
+  };
+
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
   async function onSubmit(values, e) {
     try {
@@ -49,14 +83,16 @@ function SynonymForm() {
     <div className="formContent">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
-          <InputForm
+          <Search
             label="Word"
             name="keyword"
             type="text"
-            id="keyword"
+            id="..."
+            placeholder="Keyword..."
             aria-describedby="helper-text"
             inputRef={register()}
-          ></InputForm>
+            onChange={onInputChange}
+          ></Search>
           <FormHelperText id="helper-text">
             Write the word you want to add synonyms to!
           </FormHelperText>
@@ -69,9 +105,10 @@ function SynonymForm() {
             ></InputForm>
           ))}
           <IconButton
-            icon={MdExposurePlus1}
-            size="sm"
-            fontSize="20px"
+            icon={AiFillPlusSquare}
+            size="0px"
+            fontSize="30px"
+            color="white"
             variantColor="blue"
             marginTop="7px"
             onClick={() => setIndex(index + 1)}
@@ -83,12 +120,21 @@ function SynonymForm() {
           size="md"
           width="100px"
           float="right"
+          isDisabled={synonyms.length > 0 ? true : false}
           marginBottom="20px"
           isLoading={formState.isSubmitting}
         >
           Add
         </Button>
       </form>
+      <Alert
+        isOpen={alertIsOpen}
+        onClose={onClose}
+        title="This word already exist!"
+        dialogText="Do you want to add new synonyms to this word?"
+        closeButtonText="Close"
+        buttonText="Yes"
+      ></Alert>
     </div>
   );
 }

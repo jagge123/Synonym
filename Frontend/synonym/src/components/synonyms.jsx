@@ -35,7 +35,11 @@ function Synonyms() {
   return (
     <div className="content">
       <div style={{ display: "flex", textDecoration: "none" }}>
-        <Search onChange={onInputChange} placeholder="Search..."></Search>
+        <Search
+          onChange={onInputChange}
+          placeholder="Search..."
+          width="500px"
+        ></Search>
         <Button
           variantColor="blue"
           marginLeft="10px"
