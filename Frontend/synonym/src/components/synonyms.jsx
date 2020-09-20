@@ -9,6 +9,7 @@ import { get } from "../services/synonymService";
 
 function Synonyms() {
   const [synonyms, setSynonyms] = useState();
+  const [keyword, setKeyword] = useState("");
 
   var debounceGetSynonyms = debounce(
     (query) => {
@@ -27,6 +28,7 @@ function Synonyms() {
     const { data } = await get(query);
     if (data.synonyms !== null) {
       setSynonyms(data.synonyms);
+      setKeyword(data.keyWord);
     } else {
       setSynonyms([]);
     }
@@ -48,6 +50,14 @@ function Synonyms() {
           to="/synonym/new"
         >
           New
+        </Button>
+        <Button
+          variantColor="blue"
+          marginLeft="10px"
+          as={Link}
+          to={`/synonym/update?keyword=${keyword}`}
+        >
+          Update
         </Button>
       </div>
       <div>

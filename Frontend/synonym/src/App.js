@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Synonyms from "./components/synonyms";
 import SynonymForm from "./components/synonymForm";
+import SynonymUpdateForm from "./components/synonymUpdateForm";
 import NotFound from "./components/notFound";
 
 class App extends Component {
@@ -19,6 +20,10 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route path="/synonym/new" component={SynonymForm}></Route>
+                <Route
+                  path="/synonym/update"
+                  component={SynonymUpdateForm}
+                ></Route>
                 <Route path="/not-found" component={NotFound}></Route>
                 <Route path="/synonym" component={Synonyms}></Route>
                 <Redirect to="/synonym" from="/" exact></Redirect>
