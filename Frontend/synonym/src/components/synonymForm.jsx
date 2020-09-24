@@ -38,13 +38,13 @@ function SynonymForm() {
   const handleInput = async (query) => {
     setSynonyms([]);
     const { data } = await get(query);
-    if (data.synonyms !== null) {
+    if (data.synonyms.length > 0) {
       console.log(data);
       setSynonyms(data.synonyms);
       setIsOpen(true);
     } else {
-      console.log("failed fetch");
       setSynonyms([]);
+      setIsOpen(false);
     }
   };
 

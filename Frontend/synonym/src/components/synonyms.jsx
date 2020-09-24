@@ -9,7 +9,8 @@ import { get } from "../services/synonymService";
 
 function Synonyms() {
   const [synonyms, setSynonyms] = useState();
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState();
+  const [disableUpdate, setDisableUpdate] = useState(true);
 
   var debounceGetSynonyms = debounce(
     (query) => {
@@ -26,11 +27,13 @@ function Synonyms() {
 
   const handleInput = async (query) => {
     const { data } = await get(query);
-    if (data.synonyms !== null) {
+    if (data.synonyms.length > 0) {
       setSynonyms(data.synonyms);
       setKeyword(data.keyWord);
+      setDisableUpdate(false);
     } else {
       setSynonyms([]);
+      setDisableUpdate(true);
     }
   };
 
@@ -54,6 +57,7 @@ function Synonyms() {
         <Button
           variantColor="blue"
           marginLeft="10px"
+          isDisabled={disableUpdate}
           as={Link}
           to={`/synonym/update?keyword=${keyword}`}
         >
