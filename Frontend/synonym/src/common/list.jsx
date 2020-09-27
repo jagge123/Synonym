@@ -25,7 +25,7 @@ const RenderList = ({ data }) => {
           <Text fontFamily="Trebuchet MS, Helvetica, sans-serif">
             No matches found!
           </Text>
-          <Icon as={BiSad} size="40px" color="blue.400"></Icon>
+          <Icon as={BiSad} size="40px" color="red.400"></Icon>
         </Flex>
       );
     }
