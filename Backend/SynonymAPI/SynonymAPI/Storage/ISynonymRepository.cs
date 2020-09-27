@@ -6,5 +6,7 @@ namespace SynonymAPI.Storage
     {
         SynonymModel Add(SynonymModel model);
         SynonymModel Get(string keyword);
+
+        SynonymModel Update(SynonymModel model);
     }
 }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { get } from "../services/synonymService";
+import { get, put } from "../services/synonymService";
 import GetValueFromQuery from "./../utils/stringHelper";
 import InputForm from "../common/inputForm";
 
 import { useForm } from "react-hook-form";
+import { withRouter } from "react-router-dom";
 import { AiFillPlusSquare } from "react-icons/ai";
 import { times } from "lodash";
 import {
@@ -14,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/core";
 
-function SynonymUpdateForm({ location }) {
+function SynonymUpdateForm({ location, props }) {
   const { handleSubmit, register, formState } = useForm();
   const toast = useToast();
   const [data, setData] = useState();
@@ -36,35 +37,32 @@ function SynonymUpdateForm({ location }) {
   };
 
   async function onSubmit(values, e) {
-    //try {
-    //Probably better ways to remove empty inputs...
-    //values.Synonyms = values.Synonyms.filter((synonym) => synonym);
-    let synonyms = data.synonyms.concat(values.Synonyms);
-    let updateData = { keyWord: data.keyWord, synonyms: synonyms };
-    console.log(updateData);
-    //await post(values);
-    //Remove input and reset index
-    e.target.reset();
-    setIndex(1);
-    toast({
-      title: "Success",
-      description: "Synonyms added!",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    });
-    /*
+    try {
+      let synonyms = data.synonyms.concat(values.Synonyms);
+      let updateData = { keyWord: data.keyWord, synonyms: synonyms };
+      await put(updateData);
+      //Remove input and reset index
+      setData();
+      e.target.reset();
+      setIndex(1);
+      toast({
+        title: "Success",
+        description: "Synonyms added!",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      setTimeout(() => (window.location.href = "/"), 1500);
     } catch (ex) {
       //Display general toast
       toast({
         title: "An error occurred.",
-        description: "Unable to add word with synonyms!",
+        description: "Unable to update word with synonyms!",
         status: "error",
         duration: 9000,
         isClosable: true,
       });
     }
-    */
   }
 
   return (

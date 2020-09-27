@@ -10,3 +10,7 @@ export function get(id) {
 export function post(body) {
   return http.post(endpoint, body);
 }
+
+export function put(body) {
+  return http.put(endpoint, body);
+}

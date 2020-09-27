@@ -9,12 +9,21 @@ namespace SynonymAPI.Storage
     {
         public SynonymModel Add(SynonymModel model)
         {
-            //Dont handle updates in this version...
-            if (SynonymStorage.Synonyms.ContainsKey(model.KeyWord))
+            if (SynonymStorage.SynonymKeys.Contains(model.KeyWord))
                 throw new ArgumentException("This word is already in store!");
             //Use one dictionary for storage and one HashSet for storing keys enabling faster search
             SynonymStorage.Synonyms.Add(model.KeyWord, model.Synonyms);
             SynonymStorage.SynonymKeys.Add(model.KeyWord);
+            UpdateExisting(model.KeyWord, model.Synonyms);
+
+            return model;
+        }
+
+        public SynonymModel Update(SynonymModel model)
+        {
+            if (!SynonymStorage.SynonymKeys.Contains(model.KeyWord))
+                throw new ArgumentException("This word doesn´t exist!");
+            AddSynonymRange(model.KeyWord, model.Synonyms);
             UpdateExisting(model.KeyWord, model.Synonyms);
 
             return model;
@@ -58,6 +67,17 @@ namespace SynonymAPI.Storage
             if (values != null) //Better safe than sorry...
             {
                 values.Add(synonym);
+                SynonymStorage.Synonyms[key] = values;
+            }
+        }
+        private static void AddSynonymRange(string key, HashSet<string> synonyms)
+        {
+            HashSet<string> values;
+            //Now we know that one of our values is already stored as a synonym then we add the keyword to that collection aswell
+            SynonymStorage.Synonyms.TryGetValue(key, out values);
+            if (values != null)
+            {
+                values.UnionWith(synonyms);
                 SynonymStorage.Synonyms[key] = values;
             }
         }

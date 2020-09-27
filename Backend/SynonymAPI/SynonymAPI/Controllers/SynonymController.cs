@@ -33,5 +33,13 @@ namespace SynonymAPI.Controllers
 
             return new OkObjectResult(result);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(SynonymModel synonymModel)
+        {
+            var result = await _mediator.Send(new UpdateSynonym(synonymModel));
+
+            return new OkObjectResult(result);
+        }
     }
 }
